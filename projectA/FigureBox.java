@@ -41,10 +41,8 @@ public class FigureBox {
      * @param end 끝점
      */
     public void addGroup(Point start, Point end) {
-        int x = Math.min(start.x, end.x); int y = Math.min(start.y, end.y);
-        int x2 = Math.max(start.x, end.x); int y2 = Math.max(start.y, end.y);
-        start = new Point(x, y);
-        end = new Point(x2, y2);
+        start = getStart(start, end);
+        end = getStart(start, end);
 //        System.out.println("[DEBUG] BeforeGroup : " + figures);
         FigureGroup newGroup = new FigureGroup(start, end);
         for(Figure figure: figures) {
@@ -58,6 +56,40 @@ public class FigureBox {
             figures.add(newGroup);
         }
 //        System.out.println("[DEBUG] AfterGroup : " + figures);
+    }
+
+    /**
+     * 그룹을 해제합니다.
+     * 다중 그룹에서는 그룹으로 분해됩니다.
+     * 단일 그룹에서는 도형들로 분해됩니다.
+     * @param start 시작점
+     * @param end 끝점
+     */
+    public void removeGroup(Point start, Point end) {
+//        System.out.println("[DEBUG] Before Degroup: " + figures);
+        start = getStart(start, end);
+        end = getEnd(start, end);
+        ArrayList<FigureGroup> groups = new ArrayList<>();
+        for(Figure figure: figures) {
+            if(figure instanceof FigureGroup &&figure.isRange(start, end)) {
+                groups.add((FigureGroup) figure);
+            }
+        }
+
+        figures.removeAll(groups);
+        for(FigureGroup group: groups) {
+            figures.addAll(group.getFigures());
+        }
+//        System.out.println("[DEBUG] After degroup: " + figures);
+    }
+
+    // (x1, y1) <= (x2, y2) 인 경우를 만들기 위해 helper 생성
+    private Point getStart(Point start, Point end) {
+        return new Point(Math.min(start.x, end.x), Math.min(start.y, end.y));
+    }
+
+    private Point getEnd(Point start, Point end) {
+        return new Point(Math.max(start.x, end.x), Math.min(start.y, end.y));
     }
 }
 
@@ -117,6 +149,14 @@ class FigureGroup extends Figure {
 
     public FigureGroup(Point start, Point end) {
         super(start, end);
+    }
+
+    @Override
+    public boolean isRange(Point start, Point end) {
+        for(Figure figure: figures) {
+            if(!figure.isRange(start, end)) return false;
+        }
+        return true;
     }
 
     /**

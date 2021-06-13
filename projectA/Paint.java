@@ -106,6 +106,8 @@ public class Paint extends JFrame {
                         figureBox.add(new Line(start, end)); break;
                     case GROUP:
                         figureBox.addGroup(start, end); break;
+                    case DEGROUP:
+                        figureBox.removeGroup(start, end); break;
                     default:
                         System.out.println("[MouseReleased] not supported operator! <" + type + ">");
                 }
