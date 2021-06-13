@@ -1,14 +1,9 @@
 package SwingPaint.projectA;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 
 public class Paint extends JFrame {
     private JMenuBar jMenuBar;
@@ -16,7 +11,7 @@ public class Paint extends JFrame {
     private FigureBox figureBox = new FigureBox();
     private final FileHandler fileHandler = new FileHandler();
 
-    private enum MODE {RECT, OVAL, LINE, COLOR, FILL, GROUP, DEGROUP}
+    private enum MODE {RECT, OVAL, LINE, GROUP, DEGROUP, FILL}
     private MODE type = MODE.RECT;
     public Paint() {
         setLocation(80,0);
@@ -70,10 +65,7 @@ public class Paint extends JFrame {
 
         JMenu colorBox = new JMenu("색");
             JColorChooser jColorChooser = new JColorChooser();
-            jColorChooser.getSelectionModel().addChangeListener(e -> {
-                System.out.println(jColorChooser.getColor());
-                figureBox.setColor(jColorChooser.getColor());
-            });
+            jColorChooser.getSelectionModel().addChangeListener(e -> figureBox.setColor(jColorChooser.getColor()));
             colorBox.add(jColorChooser);
         jMenuBar.add(colorBox);
 
@@ -102,7 +94,9 @@ public class Paint extends JFrame {
         private Point start, end;
         @Override
         public void mouseClicked(MouseEvent e) {
-
+            if(type == MODE.FILL) {
+                figureBox.fill(e.getPoint());
+            }
         }
 
         @Override

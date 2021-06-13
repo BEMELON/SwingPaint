@@ -1,10 +1,9 @@
 package SwingPaint.projectA;
 
-import javax.swing.*;
+
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Paint 프레임에서 사용하는 인터페이스
@@ -12,7 +11,8 @@ import java.util.Collection;
  */
 public class FigureBox implements Serializable {
     private ArrayList<Figure> figures;
-    protected Color color;
+    protected Color lineColor, figureColor;
+    protected Boolean needfill = false;
 
     public FigureBox() {
         figures = new ArrayList<>();
@@ -23,7 +23,7 @@ public class FigureBox implements Serializable {
      * @param f Figure 클래스 중 하나
      */
     public void add(Figure f) {
-        f.setColor(color);
+        f.setColor(lineColor);
         figures.add(f);
     }
 
@@ -85,6 +85,26 @@ public class FigureBox implements Serializable {
 //        System.out.println("[DEBUG] After degroup: " + figures);
     }
 
+    /**
+     * 색상을 선택한다.
+     * @param color JColorChooser로부터 선택받은 색
+     */
+    public void setColor(Color color) {
+        this.lineColor = color;
+    }
+
+    /**
+     * 범위내에 있는 도형을 지정된 색으로 채운다.
+     * @param p 클릭한 위치
+     */
+    public void fill(Point p) {
+        for(Figure figure: figures) {
+            if(figure.contains(p)) {
+                figure.fillFigure(lineColor);
+            }
+        }
+    }
+
     // (x1, y1) <= (x2, y2) 인 경우를 만들기 위해 helper 생성
     private Point getStart(Point start, Point end) {
         return new Point(Math.min(start.x, end.x), Math.min(start.y, end.y));
@@ -92,10 +112,6 @@ public class FigureBox implements Serializable {
 
     private Point getEnd(Point start, Point end) {
         return new Point(Math.max(start.x, end.x), Math.min(start.y, end.y));
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
     }
 }
 
@@ -146,6 +162,20 @@ abstract class Figure extends FigureBox implements Serializable{
      * @param g 메인 Frame의 Graphics g
      */
     public abstract void draw(Graphics g);
+
+    /**
+     * 도형에 색을 채우도록 설정합니다.
+     * @param color 지정된 색
+     */
+    public void fillFigure(Color color) {
+        needfill = true;
+        figureColor = color;
+    }
+
+    public boolean contains(Point p) {
+        return x <= p.x && p.x <= x + width
+            && y <= p.y && p.y <= y + height;
+    }
 }
 
 class FigureGroup extends Figure implements Serializable {
@@ -173,11 +203,27 @@ class FigureGroup extends Figure implements Serializable {
     public void add(Figure f) {
         figures.add(f);
     }
+
     @Override
     public void draw(Graphics g) {
         for(Figure figure: figures) {
             figure.draw(g);
         }
+    }
+
+    @Override
+    public void fillFigure(Color color) {
+        for(Figure figure: figures) {
+            figure.fillFigure(color);
+        }
+    }
+
+    @Override
+    public boolean contains(Point p) {
+        for(Figure figure: figures) {
+            if(!figure.contains(p)) return false;
+        }
+        return true;
     }
 
     /**
@@ -198,8 +244,13 @@ class Rectangle extends Figure implements Serializable {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(color);
+        g.setColor(lineColor);
         g.drawRect(x, y, width, height);
+
+        if(needfill) {
+            g.setColor(figureColor);
+            g.fillRect(x, y, width, height);
+        }
     }
 }
 class Oval extends Figure implements Serializable {
@@ -213,8 +264,13 @@ class Oval extends Figure implements Serializable {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(color);
+        g.setColor(lineColor);
         g.drawOval(x, y, width, height);
+
+        if(needfill) {
+            g.setColor(figureColor);
+            g.fillOval(x, y, width, height);
+        }
     }
 }
 class Line extends Figure implements Serializable {
@@ -233,7 +289,10 @@ class Line extends Figure implements Serializable {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(color);
+        g.setColor(lineColor);
+        if(needfill) {
+            g.setColor(figureColor);
+        }
         g.drawLine(x, y, width, height);
     }
 }
