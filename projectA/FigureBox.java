@@ -41,7 +41,10 @@ public class FigureBox {
      * @param end 끝점
      */
     public void addGroup(Point start, Point end) {
-        initPoint(start, end);
+        int x = Math.min(start.x, end.x); int y = Math.min(start.y, end.y);
+        int x2 = Math.max(start.x, end.x); int y2 = Math.max(start.y, end.y);
+        start = new Point(x, y);
+        end = new Point(x2, y2);
 //        System.out.println("[DEBUG] BeforeGroup : " + figures);
         FigureGroup newGroup = new FigureGroup(start, end);
         for(Figure figure: figures) {
@@ -50,19 +53,11 @@ public class FigureBox {
             }
         }
 //        System.out.println("[DEBUG] processing, getFigures() : " + newGroup.getFigures());
-        figures.removeAll(newGroup.getFigures());
-        figures.add(newGroup);
+        if(!(newGroup.getFigures()).isEmpty()) {
+            figures.removeAll(newGroup.getFigures());
+            figures.add(newGroup);
+        }
 //        System.out.println("[DEBUG] AfterGroup : " + figures);
-    }
-
-    private void initPoint(Point start, Point end) {
-        int x = Math.min(start.x, end.x);
-        int y = Math.min(start.y, end.y);
-        int x2 = Math.max(start.x, end.x) - x;
-        int y2 = Math.max(start.y, end.y) - y;
-        start = new Point(x, y);
-        end = new Point(x2, y2);
-
     }
 }
 
