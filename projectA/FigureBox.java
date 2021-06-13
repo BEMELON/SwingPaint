@@ -12,6 +12,7 @@ import java.util.Collection;
  */
 public class FigureBox implements Serializable {
     private ArrayList<Figure> figures;
+    protected Color color;
 
     public FigureBox() {
         figures = new ArrayList<>();
@@ -22,6 +23,7 @@ public class FigureBox implements Serializable {
      * @param f Figure 클래스 중 하나
      */
     public void add(Figure f) {
+        f.setColor(color);
         figures.add(f);
     }
 
@@ -91,9 +93,13 @@ public class FigureBox implements Serializable {
     private Point getEnd(Point start, Point end) {
         return new Point(Math.max(start.x, end.x), Math.min(start.y, end.y));
     }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 }
 
-abstract class Figure implements Serializable{
+abstract class Figure extends FigureBox implements Serializable{
     /**
      * x: x 좌표
      * y: y 좌표
@@ -134,6 +140,7 @@ abstract class Figure implements Serializable{
         return start.x <= x && x + width <= end.x
             && start.y <= y && y + height <= end.y;
     }
+
     /**
      * Class에 맞추어 paint 합니다.
      * @param g 메인 Frame의 Graphics g
@@ -191,6 +198,7 @@ class Rectangle extends Figure implements Serializable {
 
     @Override
     public void draw(Graphics g) {
+        g.setColor(color);
         g.drawRect(x, y, width, height);
     }
 }
@@ -205,6 +213,7 @@ class Oval extends Figure implements Serializable {
 
     @Override
     public void draw(Graphics g) {
+        g.setColor(color);
         g.drawOval(x, y, width, height);
     }
 }
@@ -224,6 +233,7 @@ class Line extends Figure implements Serializable {
 
     @Override
     public void draw(Graphics g) {
+        g.setColor(color);
         g.drawLine(x, y, width, height);
     }
 }

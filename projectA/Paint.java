@@ -1,13 +1,14 @@
 package SwingPaint.projectA;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 
 public class Paint extends JFrame {
     private JMenuBar jMenuBar;
@@ -69,6 +70,10 @@ public class Paint extends JFrame {
 
         JMenu colorBox = new JMenu("색");
             JColorChooser jColorChooser = new JColorChooser();
+            jColorChooser.getSelectionModel().addChangeListener(e -> {
+                System.out.println(jColorChooser.getColor());
+                figureBox.setColor(jColorChooser.getColor());
+            });
             colorBox.add(jColorChooser);
         jMenuBar.add(colorBox);
 
