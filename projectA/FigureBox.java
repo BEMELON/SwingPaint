@@ -2,6 +2,7 @@ package SwingPaint.projectA;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -9,12 +10,11 @@ import java.util.Collection;
  * Paint 프레임에서 사용하는 인터페이스
  * Composite 패턴을 사용하려 Figure 내부에는 Rectangle, Oval, Line, Group이 있다.
  */
-public class FigureBox {
+public class FigureBox implements Serializable {
     private ArrayList<Figure> figures;
-    private JFrame main;
-    public FigureBox(JFrame main) {
+
+    public FigureBox() {
         figures = new ArrayList<>();
-        this.main = main;
     }
 
     /**
@@ -93,7 +93,7 @@ public class FigureBox {
     }
 }
 
-abstract class Figure {
+abstract class Figure implements Serializable{
     /**
      * x: x 좌표
      * y: y 좌표
@@ -141,7 +141,7 @@ abstract class Figure {
     public abstract void draw(Graphics g);
 }
 
-class FigureGroup extends Figure {
+class FigureGroup extends Figure implements Serializable {
     private ArrayList<Figure> figures = new ArrayList<>();
     public FigureGroup(int x, int y, int width, int height) {
         super(x, y, width, height);
@@ -180,7 +180,7 @@ class FigureGroup extends Figure {
         return figures;
     }
 }
-class Rectangle extends Figure {
+class Rectangle extends Figure implements Serializable {
     public Rectangle(int x, int y, int width, int height) {
         super(x, y, width, height);
     }
@@ -194,7 +194,7 @@ class Rectangle extends Figure {
         g.drawRect(x, y, width, height);
     }
 }
-class Oval extends Figure {
+class Oval extends Figure implements Serializable {
     public Oval(int x, int y, int width, int height) {
         super(x, y, width, height);
     }
@@ -208,7 +208,7 @@ class Oval extends Figure {
         g.drawOval(x, y, width, height);
     }
 }
-class Line extends Figure {
+class Line extends Figure implements Serializable {
     /**
      * 별도의 변환을 거치지 않습니다.
      * @param start x1, y1

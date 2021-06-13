@@ -1,17 +1,21 @@
 package SwingPaint.projectA;
 
-import com.sun.xml.internal.bind.v2.TODO;
-
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public class Paint extends JFrame {
     private JMenuBar jMenuBar;
     private JToolBar jToolBar;
-    private final FigureBox figureBox = new FigureBox(this);
-    private enum MODE {RECT, OVAL, LINE, FILL, SAVE, NEWSAVE, LOAD, GROUP, DEGROUP}
+    private FigureBox figureBox = new FigureBox();
+    private final FileHandler fileHandler = new FileHandler();
+
+    private enum MODE {RECT, OVAL, LINE, COLOR, FILL, GROUP, DEGROUP}
     private MODE type = MODE.RECT;
     public Paint() {
         setLocation(80,0);
@@ -38,20 +42,28 @@ public class Paint extends JFrame {
     private void initMenus() {
         JMenu file = new JMenu("파일");
             JMenuItem save = new JMenuItem("저장");
-            save.addActionListener(e -> type = MODE.SAVE);
-            JMenuItem load = new JMenuItem("불러오기");
-            load.addActionListener(e -> type = MODE.LOAD);
+                save.addActionListener(e -> {
+                    fileHandler.addObject(figureBox); fileHandler.save(false);
+                });
             JMenuItem saveASnewFile = new JMenuItem("다른 이름으로 저장");
-            saveASnewFile.addActionListener(e -> type = MODE.NEWSAVE);
+                saveASnewFile.addActionListener(e -> {
+                    fileHandler.addObject(figureBox); fileHandler.save(true);
+                });
+
+            JMenuItem load = new JMenuItem("불러오기");
+                load.addActionListener(e -> {
+                    figureBox = fileHandler.load(); repaint();
+                });
+
             file.add(save); file.add(load); file.add(saveASnewFile);
         jMenuBar.add(file);
 
         JMenu selectMenu = new JMenu("선택");
             JMenuItem selectBox = new JMenuItem("그룹 선택");
             JMenuItem groupBox = new JMenuItem("그룹화");
-            groupBox.addActionListener(e -> type = MODE.GROUP);
+                groupBox.addActionListener(e -> type = MODE.GROUP);
             JMenuItem degroupBox = new JMenuItem("그룹화 해제");
-            degroupBox.addActionListener(e -> type = MODE.DEGROUP);
+                degroupBox.addActionListener(e -> type = MODE.DEGROUP);
             selectMenu.add(selectBox); selectMenu.add(groupBox); selectMenu.add(degroupBox);
         jMenuBar.add(selectMenu);
 
@@ -62,13 +74,13 @@ public class Paint extends JFrame {
 
         // TODO 아이콘으로 변경하기
         JButton rect = new JButton("RECT");
-        rect.addActionListener(e -> type = MODE.RECT);
+            rect.addActionListener(e -> type = MODE.RECT);
         JButton oval = new JButton("OVAL");
-        oval.addActionListener(e -> type = MODE.OVAL);
+            oval.addActionListener(e -> type = MODE.OVAL);
         JButton line = new JButton("LINE");
-        line.addActionListener(e -> type = MODE.LINE);
+            line.addActionListener(e -> type = MODE.LINE);
         JButton painter = new JButton("채우기");
-        painter.addActionListener(e -> type = MODE.FILL);
+            painter.addActionListener(e -> type = MODE.FILL);
 
         jToolBar.add(rect); jToolBar.add(oval); jToolBar.add(line);
         jToolBar.add(painter);
