@@ -6,6 +6,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Hashtable;
 
 public class Paint extends JFrame {
     private JMenuBar jMenuBar;
@@ -72,11 +73,9 @@ public class Paint extends JFrame {
         jMenuBar.add(colorBox);
 
         JMenu stroke = new JMenu("선 굵기");
-            JSlider jSlider = new JSlider(1, 20, 1);
-//            jSlider.setPaintTicks(true);
-//            jSlider.setPaintLabels(true);
-            jSlider.addChangeListener(e -> figureBox.setStroke(jSlider.getValue()));
-            stroke.add(jSlider);
+            StrokeSlider strokeSlider = new StrokeSlider(1, 20, 1);
+            strokeSlider.addChangeListener(e -> figureBox.setStroke(strokeSlider.getValue()));
+            stroke.add(strokeSlider);
         jMenuBar.add(stroke);
 
         // TODO 아이콘으로 변경하기

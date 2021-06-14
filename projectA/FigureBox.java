@@ -351,6 +351,7 @@ class Oval extends Figure implements Cloneable{
             g.setColor(figureColor);
             g.fillOval(x, y, width, height);
         }
+        ((Graphics2D)g).setStroke(new BasicStroke(strokeSize));
         g.setColor(lineColor);
         g.drawOval(x, y, width, height);
     }
@@ -375,6 +376,7 @@ class Line extends Figure implements Cloneable {
         if(needfill) {
             g.setColor(figureColor);
         }
+        ((Graphics2D)g).setStroke(new BasicStroke(strokeSize));
         g.drawLine(x, y, width, height);
     }
 }
