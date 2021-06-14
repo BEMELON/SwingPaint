@@ -331,7 +331,6 @@ class Rectangle extends Figure implements Cloneable {
             g.setColor(figureColor);
             g.fillRect(x, y, width, height);
         }
-        System.out.println(strokeSize);
         ((Graphics2D)g).setStroke(new BasicStroke(strokeSize));
         g.setColor(lineColor);
         g.drawRect(x, y, width, height);
