@@ -15,7 +15,7 @@ public class FigureBox implements Serializable {
                     figureColor = Color.BLACK;
     protected Boolean needfill = false,
                       needSelect = false;
-
+    protected int strokeSize = 1;
     public FigureBox() {
         figures = new ArrayList<>();
     }
@@ -27,6 +27,7 @@ public class FigureBox implements Serializable {
     public void add(Figure f) {
         needSelect = false;
         f.setColor(lineColor);
+        f.setStroke(strokeSize);
         figures.add(f);
     }
 
@@ -107,6 +108,7 @@ public class FigureBox implements Serializable {
         for(Figure figure: figures) {
             if(figure.contains(p)) {
                 figure.fillFigure(lineColor);
+                break;
             }
         }
     }
@@ -147,6 +149,13 @@ public class FigureBox implements Serializable {
         }
     }
 
+    /**
+     * JSlider로부터 결정된 선 굵기를 저장
+     * @param value 선 굵기
+     */
+    public void setStroke(int value) {
+        this.strokeSize = value;
+    }
     // (x1, y1) <= (x2, y2) 인 경우를 만들기 위해 helper 생성
     private Point getStart(Point start, Point end) {
         return new Point(Math.min(start.x, end.x), Math.min(start.y, end.y));
@@ -155,6 +164,8 @@ public class FigureBox implements Serializable {
     private Point getEnd(Point start, Point end) {
         return new Point(Math.max(start.x, end.x), Math.max(start.y, end.y));
     }
+
+
 }
 
 abstract class Figure extends FigureBox implements Serializable{
@@ -320,6 +331,8 @@ class Rectangle extends Figure implements Cloneable {
             g.setColor(figureColor);
             g.fillRect(x, y, width, height);
         }
+        System.out.println(strokeSize);
+        ((Graphics2D)g).setStroke(new BasicStroke(strokeSize));
         g.setColor(lineColor);
         g.drawRect(x, y, width, height);
     }

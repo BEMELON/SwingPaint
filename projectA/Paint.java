@@ -1,6 +1,8 @@
 package SwingPaint.projectA;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -13,6 +15,7 @@ public class Paint extends JFrame {
 
     private enum MODE {RECT, OVAL, LINE, GROUP, DEGROUP, FILL, COPY, MOVE}
     private MODE type = MODE.RECT;
+
     public Paint() {
         setLocation(80,0);
         setSize(1920 / 2, 1080 / 2);
@@ -59,10 +62,7 @@ public class Paint extends JFrame {
                 groupBox.addActionListener(e -> type = MODE.GROUP);
             JMenuItem degroupBox = new JMenuItem("그룹화 해제");
                 degroupBox.addActionListener(e -> type = MODE.DEGROUP);
-            JMenuItem copy = new JMenuItem("복사");
-                copy.addActionListener(e -> type = MODE.COPY);
             selectMenu.add(groupBox); selectMenu.add(degroupBox);
-            selectMenu.add(copy);
         jMenuBar.add(selectMenu);
 
         JMenu colorBox = new JMenu("색");
@@ -70,6 +70,14 @@ public class Paint extends JFrame {
             jColorChooser.getSelectionModel().addChangeListener(e -> figureBox.setColor(jColorChooser.getColor()));
             colorBox.add(jColorChooser);
         jMenuBar.add(colorBox);
+
+        JMenu stroke = new JMenu("선 굵기");
+            JSlider jSlider = new JSlider(1, 20, 1);
+//            jSlider.setPaintTicks(true);
+//            jSlider.setPaintLabels(true);
+            jSlider.addChangeListener(e -> figureBox.setStroke(jSlider.getValue()));
+            stroke.add(jSlider);
+        jMenuBar.add(stroke);
 
         // TODO 아이콘으로 변경하기
         JButton move = new JButton("MOVE");
@@ -82,9 +90,11 @@ public class Paint extends JFrame {
             line.addActionListener(e -> type = MODE.LINE);
         JButton painter = new JButton("채우기");
             painter.addActionListener(e -> type = MODE.FILL);
+        JButton copy = new JButton("복사");
+            copy.addActionListener(e -> type = MODE.COPY);
 
         jToolBar.add(rect); jToolBar.add(oval); jToolBar.add(line);
-        jToolBar.add(painter); jToolBar.add(move);
+        jToolBar.add(painter); jToolBar.add(move); jToolBar.add(copy);
     }
 
     @Override
