@@ -48,7 +48,7 @@ public class FigureBox implements Serializable {
     public void addGroup(Point start, Point end) {
         needSelect = false;
         Point newStart = getStart(start, end);
-        Point newEnd = getStart(start, end);
+        Point newEnd = getEnd(start, end);
 //        System.out.println("[DEBUG] BeforeGroup : " + figures);
         FigureGroup newGroup = new FigureGroup(newStart, newEnd);
         for(Figure figure: figures) {
@@ -78,7 +78,7 @@ public class FigureBox implements Serializable {
         Point newEnd = getEnd(start, end);
         ArrayList<FigureGroup> groups = new ArrayList<>();
         for(Figure figure: figures) {
-            if(figure instanceof FigureGroup &&figure.isRange(newStart, newEnd)) {
+            if(figure instanceof FigureGroup && figure.isRange(newStart, newEnd)) {
                 groups.add((FigureGroup) figure);
             }
         }
@@ -118,6 +118,7 @@ public class FigureBox implements Serializable {
      * @param end 종점
      */
     public void copy(Point start, Point end) {
+//        System.out.println("[DEBUG] beforeCopy : " + figures);
         FigureGroup newGroup = new FigureGroup(start, end);
         for(Figure figure: figures) {
             if(figure.isRange(start, end)) {
@@ -129,7 +130,8 @@ public class FigureBox implements Serializable {
             }
         }
         figures.add(newGroup);
-        newGroup.moveTo(new Point(20, 0));
+//        System.out.println("[DEBUG] afterCopy : " + figures);
+        newGroup.moveTo(new Point(20, 20));
     }
 
     /**
@@ -151,7 +153,7 @@ public class FigureBox implements Serializable {
     }
 
     private Point getEnd(Point start, Point end) {
-        return new Point(Math.max(start.x, end.x), Math.min(start.y, end.y));
+        return new Point(Math.max(start.x, end.x), Math.max(start.y, end.y));
     }
 }
 
@@ -221,10 +223,14 @@ abstract class Figure extends FigureBox implements Serializable{
         this.x = this.x + diff.x;
         this.y = this.y + diff.y;
     }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
 
-class FigureGroup extends Figure implements Cloneable {
-    // TODO isRange 처럼 범위를 기반으로 체크하는 메소드들은 언제 True를 주고 언제 false를 줄 것인지?
+class FigureGroup extends Figure {
     private ArrayList<Figure> figures = new ArrayList<>();
     public FigureGroup(int x, int y, int width, int height) {
         super(x, y, width, height);
@@ -232,6 +238,19 @@ class FigureGroup extends Figure implements Cloneable {
 
     public FigureGroup(Point start, Point end) {
         super(start, end);
+    }
+
+    public String toString() {
+        return figures.toString();
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        FigureGroup clone = new FigureGroup(new Point(0, 0), new Point(0, 0));
+        for(Figure figure: figures) {
+            clone.add((Figure) figure.clone());
+        }
+        return clone;
     }
 
     @Override
@@ -274,9 +293,9 @@ class FigureGroup extends Figure implements Cloneable {
     @Override
     public boolean contains(Point p) {
         for(Figure figure: figures) {
-            if(!figure.contains(p)) return false;
+            if(figure.contains(p)) return true;
         }
-        return true;
+        return false;
     }
 
     /**
