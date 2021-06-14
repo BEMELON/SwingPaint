@@ -11,8 +11,10 @@ import java.util.ArrayList;
  */
 public class FigureBox implements Serializable {
     private ArrayList<Figure> figures;
-    protected Color lineColor, figureColor;
-    protected Boolean needfill = false;
+    protected Color lineColor = Color.BLACK,
+                    figureColor = Color.BLACK;
+    protected Boolean needfill = false,
+                      needSelect = false;
 
     public FigureBox() {
         figures = new ArrayList<>();
@@ -23,6 +25,7 @@ public class FigureBox implements Serializable {
      * @param f Figure 클래스 중 하나
      */
     public void add(Figure f) {
+        needSelect = false;
         f.setColor(lineColor);
         figures.add(f);
     }
@@ -43,12 +46,13 @@ public class FigureBox implements Serializable {
      * @param end 끝점
      */
     public void addGroup(Point start, Point end) {
-        start = getStart(start, end);
-        end = getStart(start, end);
+        needSelect = false;
+        Point newStart = getStart(start, end);
+        Point newEnd = getStart(start, end);
 //        System.out.println("[DEBUG] BeforeGroup : " + figures);
-        FigureGroup newGroup = new FigureGroup(start, end);
+        FigureGroup newGroup = new FigureGroup(newStart, newEnd);
         for(Figure figure: figures) {
-            if(figure.isRange(start, end)) {
+            if(figure.isRange(newStart, newEnd)) {
                 newGroup.add(figure);
             }
         }
@@ -69,11 +73,12 @@ public class FigureBox implements Serializable {
      */
     public void removeGroup(Point start, Point end) {
 //        System.out.println("[DEBUG] Before Degroup: " + figures);
-        start = getStart(start, end);
-        end = getEnd(start, end);
+        needSelect = false;
+        Point newStart = getStart(start, end);
+        Point newEnd = getEnd(start, end);
         ArrayList<FigureGroup> groups = new ArrayList<>();
         for(Figure figure: figures) {
-            if(figure instanceof FigureGroup &&figure.isRange(start, end)) {
+            if(figure instanceof FigureGroup &&figure.isRange(newStart, newEnd)) {
                 groups.add((FigureGroup) figure);
             }
         }
@@ -98,9 +103,26 @@ public class FigureBox implements Serializable {
      * @param p 클릭한 위치
      */
     public void fill(Point p) {
+        needSelect = false;
         for(Figure figure: figures) {
             if(figure.contains(p)) {
                 figure.fillFigure(lineColor);
+            }
+        }
+    }
+
+    public void copy(Point start, Point end) {
+    }
+
+    /**
+     * start 범위에 있는 도형을 end로 이동한다.
+     * @param src 해당 위치에 있는 도형들
+     * @param dest 목적지
+     */
+    public void move(Point src, Point dest) {
+        for(Figure figure: figures) {
+            if(figure.contains(src)) {
+                figure.moveTo(new Point(dest.x - src.x, dest.y - src.y));
             }
         }
     }
@@ -176,6 +198,11 @@ abstract class Figure extends FigureBox implements Serializable{
         return x <= p.x && p.x <= x + width
             && y <= p.y && p.y <= y + height;
     }
+
+    public void moveTo(Point diff) {
+        this.x = this.x + diff.x;
+        this.y = this.y + diff.y;
+    }
 }
 
 class FigureGroup extends Figure implements Serializable {
@@ -202,6 +229,13 @@ class FigureGroup extends Figure implements Serializable {
      */
     public void add(Figure f) {
         figures.add(f);
+    }
+
+    @Override
+    public void moveTo(Point diff) {
+        for(Figure figure: figures) {
+            figure.moveTo(diff);
+        }
     }
 
     @Override
@@ -244,13 +278,12 @@ class Rectangle extends Figure implements Serializable {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(lineColor);
-        g.drawRect(x, y, width, height);
-
         if(needfill) {
             g.setColor(figureColor);
             g.fillRect(x, y, width, height);
         }
+        g.setColor(lineColor);
+        g.drawRect(x, y, width, height);
     }
 }
 class Oval extends Figure implements Serializable {
@@ -264,13 +297,12 @@ class Oval extends Figure implements Serializable {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(lineColor);
-        g.drawOval(x, y, width, height);
-
         if(needfill) {
             g.setColor(figureColor);
             g.fillOval(x, y, width, height);
         }
+        g.setColor(lineColor);
+        g.drawOval(x, y, width, height);
     }
 }
 class Line extends Figure implements Serializable {

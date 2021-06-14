@@ -11,7 +11,7 @@ public class Paint extends JFrame {
     private FigureBox figureBox = new FigureBox();
     private final FileHandler fileHandler = new FileHandler();
 
-    private enum MODE {RECT, OVAL, LINE, GROUP, DEGROUP, FILL}
+    private enum MODE {RECT, OVAL, LINE, GROUP, DEGROUP, FILL, COPY, MOVE}
     private MODE type = MODE.RECT;
     public Paint() {
         setLocation(80,0);
@@ -55,12 +55,14 @@ public class Paint extends JFrame {
         jMenuBar.add(file);
 
         JMenu selectMenu = new JMenu("선택");
-            JMenuItem selectBox = new JMenuItem("그룹 선택");
             JMenuItem groupBox = new JMenuItem("그룹화");
                 groupBox.addActionListener(e -> type = MODE.GROUP);
             JMenuItem degroupBox = new JMenuItem("그룹화 해제");
                 degroupBox.addActionListener(e -> type = MODE.DEGROUP);
-            selectMenu.add(selectBox); selectMenu.add(groupBox); selectMenu.add(degroupBox);
+            JMenuItem copy = new JMenuItem("복사");
+                copy.addActionListener(e -> type = MODE.COPY);
+            selectMenu.add(groupBox); selectMenu.add(degroupBox);
+            selectMenu.add(copy);
         jMenuBar.add(selectMenu);
 
         JMenu colorBox = new JMenu("색");
@@ -70,6 +72,8 @@ public class Paint extends JFrame {
         jMenuBar.add(colorBox);
 
         // TODO 아이콘으로 변경하기
+        JButton move = new JButton("MOVE");
+            move.addActionListener(e -> type = MODE.MOVE);
         JButton rect = new JButton("RECT");
             rect.addActionListener(e -> type = MODE.RECT);
         JButton oval = new JButton("OVAL");
@@ -80,7 +84,7 @@ public class Paint extends JFrame {
             painter.addActionListener(e -> type = MODE.FILL);
 
         jToolBar.add(rect); jToolBar.add(oval); jToolBar.add(line);
-        jToolBar.add(painter);
+        jToolBar.add(painter); jToolBar.add(move);
     }
 
     @Override
@@ -119,6 +123,10 @@ public class Paint extends JFrame {
                         figureBox.addGroup(start, end); break;
                     case DEGROUP:
                         figureBox.removeGroup(start, end); break;
+                    case COPY:
+                        figureBox.copy(start, end); break;
+                    case MOVE:
+                        figureBox.move(start, end); break;
                     default:
                         System.out.println("[MouseReleased] not supported operator! <" + type + ">");
                 }
