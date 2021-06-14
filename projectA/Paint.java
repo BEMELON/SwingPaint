@@ -2,8 +2,7 @@ package SwingPaint.projectA;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
 public class Paint extends JFrame {
     private final MyMenuBar myMenuBar;
@@ -22,7 +21,7 @@ public class Paint extends JFrame {
         setLayout(new BorderLayout(0, 0));
         addMouseListener(new myMouseListener());
 
-        myMenuBar = new MyMenuBar(255, 255, 255);
+        myMenuBar = new MyMenuBar(211, 211, 211);
         add(myMenuBar, BorderLayout.NORTH);
 
         jToolBar = new MyToolBar(null, JToolBar.VERTICAL);
@@ -36,15 +35,18 @@ public class Paint extends JFrame {
     private void initMenus() {
         CustomMenu file = new CustomMenu("파일");
             JMenuItem save = new JMenuItem("저장");
+                save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
                 save.addActionListener(e -> {
                     fileHandler.addObject(figureBox); fileHandler.save(false);
                 });
             JMenuItem saveASnewFile = new JMenuItem("다른 이름으로 저장");
+                saveASnewFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
                 saveASnewFile.addActionListener(e -> {
                     fileHandler.addObject(figureBox); fileHandler.save(true);
                 });
 
             JMenuItem load = new JMenuItem("불러오기");
+                load.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
                 load.addActionListener(e -> {
                     figureBox = fileHandler.load(); repaint();
                 });
@@ -86,6 +88,7 @@ public class Paint extends JFrame {
         JButton painter = new JButton(new ImageIcon(basePath + "paint.png"));
             painter.addActionListener(e -> setMode(MODE.FILL, Cursor.HAND_CURSOR));
         JButton copy = new JButton(new ImageIcon(basePath + "copy.png"));
+            copy.setMnemonic('c');
             copy.addActionListener(e -> setMode(MODE.COPY, Cursor.CROSSHAIR_CURSOR));
 
         jToolBar.add(rect); jToolBar.add(oval); jToolBar.add(line);
@@ -141,7 +144,6 @@ public class Paint extends JFrame {
                         System.out.println("[MouseReleased] not supported operator! <" + type + ">");
                 }
             }
-            setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             repaint();
         }
 
