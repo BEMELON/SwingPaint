@@ -1,16 +1,13 @@
 package SwingPaint.projectA;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Hashtable;
 
 public class Paint extends JFrame {
-    private JMenuBar jMenuBar;
-    private JToolBar jToolBar;
+    private final MyMenuBar myMenuBar;
+    private MyToolBar jToolBar;
     private FigureBox figureBox = new FigureBox();
     private final FileHandler fileHandler = new FileHandler();
 
@@ -21,26 +18,23 @@ public class Paint extends JFrame {
         setLocation(80,0);
         setSize(1920 / 2, 1080 / 2);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        getContentPane().setBackground(Color.white);
         setLayout(new BorderLayout(0, 0));
         addMouseListener(new myMouseListener());
 
-        initMenuBar();
-        initToolBar();
+        myMenuBar = new MyMenuBar(255, 255, 255);
+        add(myMenuBar, BorderLayout.NORTH);
+
+        jToolBar = new MyToolBar(null, JToolBar.VERTICAL);
+        add(jToolBar, BorderLayout.WEST);
+
         initMenus();
 
         setVisible(true);
     }
 
-    private void initToolBar() {
-        jToolBar = new JToolBar(null, JToolBar.VERTICAL);
-        add(jToolBar, BorderLayout.WEST);
-    }
-    private void initMenuBar() {
-        jMenuBar = new JMenuBar();
-        add(jMenuBar, BorderLayout.NORTH);
-    }
     private void initMenus() {
-        JMenu file = new JMenu("파일");
+        CustomMenu file = new CustomMenu("파일");
             JMenuItem save = new JMenuItem("저장");
                 save.addActionListener(e -> {
                     fileHandler.addObject(figureBox); fileHandler.save(false);
@@ -56,39 +50,42 @@ public class Paint extends JFrame {
                 });
 
             file.add(save); file.add(load); file.add(saveASnewFile);
-        jMenuBar.add(file);
+        myMenuBar.add(file);
 
-        JMenu selectMenu = new JMenu("그룹");
+        CustomMenu selectMenu = new CustomMenu("그룹");
             JMenuItem groupBox = new JMenuItem("그룹화");
                 groupBox.addActionListener(e -> type = MODE.GROUP);
             JMenuItem degroupBox = new JMenuItem("그룹화 해제");
                 degroupBox.addActionListener(e -> type = MODE.DEGROUP);
             selectMenu.add(groupBox); selectMenu.add(degroupBox);
-        jMenuBar.add(selectMenu);
+        myMenuBar.add(selectMenu);
 
-        JMenu colorBox = new JMenu("색");
+        CustomMenu colorBox = new CustomMenu("색");
             JColorChooser jColorChooser = new JColorChooser();
             jColorChooser.getSelectionModel().addChangeListener(e -> figureBox.setColor(jColorChooser.getColor()));
             colorBox.add(jColorChooser);
-        jMenuBar.add(colorBox);
+        myMenuBar.add(colorBox);
 
-        JMenu stroke = new JMenu("선 굵기");
+        CustomMenu stroke = new CustomMenu("선 굵기");
             StrokeSlider strokeSlider = new StrokeSlider(1, 20, 1);
             strokeSlider.addChangeListener(e -> figureBox.setStroke(strokeSlider.getValue()));
             stroke.add(strokeSlider);
-        jMenuBar.add(stroke);
-        // TODO 아이콘으로 변경하기
-        JButton move = new JButton("MOVE");
+        myMenuBar.add(stroke);
+
+        // TODO 배포전, path 수정
+        // Image파일은 모두 25pix, 22pix을 통일
+        String basePath = "src\\SwingPaint\\projectA\\resources\\";
+        JButton move = new JButton(new ImageIcon(basePath + "move.png"));
             move.addActionListener(e -> setMode(MODE.MOVE, Cursor.MOVE_CURSOR));
-        JButton rect = new JButton("RECT");
+        JButton rect = new JButton(new ImageIcon(basePath + "rect.png"));
             rect.addActionListener(e -> setMode(MODE.RECT, Cursor.CROSSHAIR_CURSOR));
-        JButton oval = new JButton("OVAL");
+        JButton oval = new JButton(new ImageIcon(basePath + "oval.png"));
             oval.addActionListener(e -> setMode(MODE.OVAL, Cursor.CROSSHAIR_CURSOR));
-        JButton line = new JButton("LINE");
+        JButton line = new JButton(new ImageIcon(basePath + "line.png"));
             line.addActionListener(e -> setMode(MODE.LINE, Cursor.CROSSHAIR_CURSOR));
-        JButton painter = new JButton("채우기");
+        JButton painter = new JButton(new ImageIcon(basePath + "paint.png"));
             painter.addActionListener(e -> setMode(MODE.FILL, Cursor.HAND_CURSOR));
-        JButton copy = new JButton("복사");
+        JButton copy = new JButton(new ImageIcon(basePath + "copy.png"));
             copy.addActionListener(e -> setMode(MODE.COPY, Cursor.CROSSHAIR_CURSOR));
 
         jToolBar.add(rect); jToolBar.add(oval); jToolBar.add(line);
