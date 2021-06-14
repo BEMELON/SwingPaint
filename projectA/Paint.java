@@ -58,7 +58,7 @@ public class Paint extends JFrame {
             file.add(save); file.add(load); file.add(saveASnewFile);
         jMenuBar.add(file);
 
-        JMenu selectMenu = new JMenu("선택");
+        JMenu selectMenu = new JMenu("그룹");
             JMenuItem groupBox = new JMenuItem("그룹화");
                 groupBox.addActionListener(e -> type = MODE.GROUP);
             JMenuItem degroupBox = new JMenuItem("그룹화 해제");
@@ -77,23 +77,27 @@ public class Paint extends JFrame {
             strokeSlider.addChangeListener(e -> figureBox.setStroke(strokeSlider.getValue()));
             stroke.add(strokeSlider);
         jMenuBar.add(stroke);
-
         // TODO 아이콘으로 변경하기
         JButton move = new JButton("MOVE");
-            move.addActionListener(e -> type = MODE.MOVE);
+            move.addActionListener(e -> setMode(MODE.MOVE, Cursor.MOVE_CURSOR));
         JButton rect = new JButton("RECT");
-            rect.addActionListener(e -> type = MODE.RECT);
+            rect.addActionListener(e -> setMode(MODE.RECT, Cursor.CROSSHAIR_CURSOR));
         JButton oval = new JButton("OVAL");
-            oval.addActionListener(e -> type = MODE.OVAL);
+            oval.addActionListener(e -> setMode(MODE.OVAL, Cursor.CROSSHAIR_CURSOR));
         JButton line = new JButton("LINE");
-            line.addActionListener(e -> type = MODE.LINE);
+            line.addActionListener(e -> setMode(MODE.LINE, Cursor.CROSSHAIR_CURSOR));
         JButton painter = new JButton("채우기");
-            painter.addActionListener(e -> type = MODE.FILL);
+            painter.addActionListener(e -> setMode(MODE.FILL, Cursor.HAND_CURSOR));
         JButton copy = new JButton("복사");
-            copy.addActionListener(e -> type = MODE.COPY);
+            copy.addActionListener(e -> setMode(MODE.COPY, Cursor.CROSSHAIR_CURSOR));
 
         jToolBar.add(rect); jToolBar.add(oval); jToolBar.add(line);
         jToolBar.add(painter); jToolBar.add(move); jToolBar.add(copy);
+    }
+
+    private void setMode(MODE mode, int cursorMode) {
+        type = mode;
+        setCursor(new Cursor(cursorMode));
     }
 
     @Override
@@ -140,6 +144,7 @@ public class Paint extends JFrame {
                         System.out.println("[MouseReleased] not supported operator! <" + type + ">");
                 }
             }
+            setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             repaint();
         }
 
