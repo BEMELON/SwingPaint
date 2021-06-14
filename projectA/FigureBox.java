@@ -111,7 +111,25 @@ public class FigureBox implements Serializable {
         }
     }
 
+    /**
+     * start~end 범위 내에 있는 도형을 복사한다
+     * 복사된 도형들은 하나의 그룹이 되며 살짝 옆으로 붙여넣어진다.
+     * @param start 시작점
+     * @param end 종점
+     */
     public void copy(Point start, Point end) {
+        FigureGroup newGroup = new FigureGroup(start, end);
+        for(Figure figure: figures) {
+            if(figure.isRange(start, end)) {
+                try {
+                    newGroup.add((Figure) figure.clone());
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        figures.add(newGroup);
+        newGroup.moveTo(new Point(20, 0));
     }
 
     /**
@@ -205,7 +223,8 @@ abstract class Figure extends FigureBox implements Serializable{
     }
 }
 
-class FigureGroup extends Figure implements Serializable {
+class FigureGroup extends Figure implements Cloneable {
+    // TODO isRange 처럼 범위를 기반으로 체크하는 메소드들은 언제 True를 주고 언제 false를 줄 것인지?
     private ArrayList<Figure> figures = new ArrayList<>();
     public FigureGroup(int x, int y, int width, int height) {
         super(x, y, width, height);
@@ -267,7 +286,7 @@ class FigureGroup extends Figure implements Serializable {
         return figures;
     }
 }
-class Rectangle extends Figure implements Serializable {
+class Rectangle extends Figure implements Cloneable {
     public Rectangle(int x, int y, int width, int height) {
         super(x, y, width, height);
     }
@@ -286,7 +305,7 @@ class Rectangle extends Figure implements Serializable {
         g.drawRect(x, y, width, height);
     }
 }
-class Oval extends Figure implements Serializable {
+class Oval extends Figure implements Cloneable{
     public Oval(int x, int y, int width, int height) {
         super(x, y, width, height);
     }
@@ -305,7 +324,7 @@ class Oval extends Figure implements Serializable {
         g.drawOval(x, y, width, height);
     }
 }
-class Line extends Figure implements Serializable {
+class Line extends Figure implements Cloneable {
     /**
      * 별도의 변환을 거치지 않습니다.
      * @param start x1, y1
