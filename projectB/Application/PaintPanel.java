@@ -1,6 +1,6 @@
 package SwingPaint.projectB.Application;
 
-import SwingPaint.projectB.SwingAPI.MyButton;
+import SwingPaint.projectB.SwingAPI.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +9,8 @@ import java.awt.event.MouseListener;
 
 public class PaintPanel extends JPanel {
     private FigureBox figurebox;
+    private MyToolBar myToolBar;
+    private MyMenuBar myMenuBar;
     private Figure type = Figure.RECT;
     private Color color = Color.black;
 
@@ -70,24 +72,24 @@ public class PaintPanel extends JPanel {
 
         //TODO toICON
         MyButton rect = new MyButton("RECT");
-            rect.addActionListener(new MyActionListener((e) -> setFigure(FIGURE.RECT)));
+            rect.addActionListener((e) -> setFigure(FIGURE.RECT));
             myToolBar.add(rect);
         MyButton oval = new MyButton("OVAL");
-            oval.addActionListener(new MyActionListener((e) -> setFigure(FIGURE.OVAL)));
+            oval.addActionListener((e) -> setFigure(FIGURE.OVAL));
             myToolBar.add(oval);
         MyButton line = new MyButton("LINE");
-            line.addActionListener(new MyActionListener((e) -> setFigure(FIGURE.LINE)));
+            line.addActionListener((e) -> setFigure(FIGURE.LINE)));
             myToolBar.add(line);
         MyButton fill = new MyButton("채우기");
             myToolBar.add(fill);
         MyButton red = new MyButton("RED");
-            red.addActionListener(new MyActionListener((e) -> setColor(Color.red)));
+            red.addActionListener(e) -> setColor(Color.red));
             myToolBar.add(red);
         MyButton black = new MyButton("BLACK");
-            black.addActionListener(new MyActionListener((e) -> setColor(Color.black)));
+            black.addActionListener(e) -> setColor(Color.black));
             myToolBar.add(black);
         MyButton yellow = new MyButton("YELlOW");
-            yellow.addActionListener(new MyActionListener((e) -> setColor(Color.yellow)));
+            yellow.addActionListener((e) -> setColor(Color.yellow));
             myToolBar.add(yellow);
         add(myToolBar);
     }
@@ -97,24 +99,24 @@ public class PaintPanel extends JPanel {
 
         MyMenu figure = new MyMenu("도형");
         MyMenuItem rect = new MyMenuItem("사각형");
-            rect.addActionListener(new MyActionListener((e) -> setFigure(FIGURE.RECT)));
+            rect.addActionListener((e) -> setFigure(FIGURE.RECT)));
             figure.add(rect);
         MyMenuItem oval = new MyMenuItem("타원");
-            oval.addActionListener(new MyActionListener((e) -> setFigure(FIGURE.OVAL)));
+            oval.addActionListener((e) -> setFigure(FIGURE.OVAL)));
             figure.add(oval);
         MyMenuItem line = new MyMenuItem("선분");
-            line.addActionListener(new MyActionListener((e) -> setFigure(FIGURE.LINE)));
+            line.addActionListener((e) -> setFigure(FIGURE.LINE)));
             figure.add(line);
 
         MyMenu color = new MyMenu("색상");
             MyMenuItem black = new MyMenuItem("검정");
-                black.addActionListener(new MyActionListener((e) -> setColor(Color.black)));
+                black.addActionListener((e) -> setColor(Color.black));
                  color.add(black);
             MyMenuItem red = new MyMenuItem("빨강");
-                red.addActionListener(new MyActionListener((e) -> setColor(Color.red)));
+                red.addActionListener((e) -> setColor(Color.red));
                 color.add(red);
             MyMenuItem yellow = new MyMenuItem("노랑");
-                yellow.addActionListener(new MyActionListener((e) -> setColor(Color.yellow)));
+                yellow.addActionListener((e) -> setColor(Color.yellow));
                 color.add(yellow);
 
         myMenuBar.add(figure);
