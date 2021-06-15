@@ -8,7 +8,7 @@ import java.awt.*;
 public class MyButton {
     // Button 이름이 들어가 있는 경우
     private String name;
-
+    private MyActionListener myActionListener;
     // Button (x, y), 넓이와 높이
     private int x, y, width, height;
 
@@ -33,6 +33,10 @@ public class MyButton {
         this.width = width; this.height = height;
     }
 
+    public void addActionListener(MyActionListener listener) {
+        this.myActionListener = listener;
+    }
+
     public String getName() {
         return name;
     }
@@ -42,4 +46,7 @@ public class MyButton {
     }
 
 
+    public void draw(Graphics g) {
+        g.drawRect(x, y, width, height);
+    }
 }
