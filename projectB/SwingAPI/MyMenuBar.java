@@ -4,26 +4,35 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class MyMenuBar {
-    private ArrayList<MyMenu> menus;
-    private int height, width;
+    private ArrayList<MyMenu> menus = new ArrayList<>();
+    private int height = 20, width;
 
     public MyMenuBar() {
-        menus = new ArrayList<>();
-        height = 20;
     }
 
     public MyMenuBar(int height) {
-        super();
         this.height = height;
     }
 
     public void add(MyMenu menu) {
+        menu.setX(width);
+        width += menu.getWidth();
+        menu.setHeight(height);
         menus.add(menu);
     }
 
     public void draw(Graphics g) {
+        g.drawRect(0,0, width, height);
         for(MyMenu menu: menus) {
             menu.draw(g);
+        }
+    }
+
+    public void clickEvent(Point p) {
+        for(MyMenu menu: menus) {
+            if(menu.contains(p)) {
+                menu.click();
+            }
         }
     }
 }

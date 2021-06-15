@@ -1,6 +1,7 @@
 package SwingPaint.projectB.SwingAPI;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class MyMenuItem extends MyMenu {
     private MyActionListener myActionListener;
@@ -13,8 +14,21 @@ public class MyMenuItem extends MyMenu {
         this.myActionListener = listener;
     }
 
+
+    @Override
+    public boolean contains(Point p) {
+        return  x <= p.x && p.x <= x + width
+             && y <= p.y && p.y <= y + height;
+    }
+
+    @Override
+    public void click() {
+        myActionListener.actionPerformed(new ActionEvent(new Point(), 1, ""));
+    }
+
     @Override
     public void draw(Graphics g) {
-        g.drawString(name, 10, 10);
+        g.drawString(name, x + tx, y + ty);
+        g.drawRect(x, y, width, height);
     }
 }
