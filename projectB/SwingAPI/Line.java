@@ -1,5 +1,4 @@
 package SwingPaint.projectB.SwingAPI;
 
-public interface MyAbstractButton {
-
+public class Line extends Figure {
 }

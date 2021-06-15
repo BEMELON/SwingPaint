@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * 중단, Bottom-UP 하기에는 모르는 정보가 너무 많음.
  */
-public class MyButton implements MyAbstractButton {
+public class MyButton {
     // Button 이름이 들어가 있는 경우
     private String name;
 
