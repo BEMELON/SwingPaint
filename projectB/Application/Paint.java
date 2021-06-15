@@ -12,8 +12,8 @@ public class Paint extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setContentPane(paintPanel);
 
-        setLayout(new MyFlowLayout());
-        setLayout(new MyGridLayout());
+//        setLayout(new MyFlowLayout());
+//        setLayout(new MyGridLayout());
 
         setVisible(true);
     }
