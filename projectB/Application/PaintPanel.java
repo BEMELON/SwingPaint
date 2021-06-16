@@ -20,7 +20,11 @@ public class PaintPanel extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-
+            myMenuBar.clickEvent(e.getPoint());
+            myToolBar.clickEvent(e.getPoint());
+            if (type == Figure.FILL)
+                figureBox.fill(e.getPoint(), color);
+            repaint();
         }
 
         @Override
@@ -34,6 +38,9 @@ public class PaintPanel extends JPanel {
             if(!start.equals(end)) {
                 dragEvent(start, end);
             }
+
+            myMenuBar.clickEvent(e.getPoint());
+            repaint();
         }
 
         @Override
@@ -56,6 +63,7 @@ public class PaintPanel extends JPanel {
         addMouseListener(new MyMouseListener());
     }
 
+
     private void dragEvent(Point start, Point end) {
         switch (type) {
             case Figure.RECT:
@@ -67,12 +75,14 @@ public class PaintPanel extends JPanel {
         }
     }
 
-    public void setFigure(int type) {
+    public void setFigure(int type, int cursorMode) {
+        setCursor(new Cursor(cursorMode));
         this.type = type;
     }
 
     public void setColor(Color color) {
         this.color = color;
+        figureBox.setColor(color);
     }
 
     private void initToolBar() {
@@ -80,23 +90,24 @@ public class PaintPanel extends JPanel {
 
         //TODO toICON
         MyButton rect = new MyButton("RECT");
-            rect.addActionListener(e -> setFigure(Figure.RECT));
+            rect.addActionListener(e -> setFigure(Figure.RECT, Cursor.CROSSHAIR_CURSOR));
             myToolBar.add(rect);
         MyButton oval = new MyButton("OVAL");
-            oval.addActionListener(e -> setFigure(Figure.OVAL));
+            oval.addActionListener(e -> setFigure(Figure.OVAL, Cursor.CROSSHAIR_CURSOR));
             myToolBar.add(oval);
         MyButton line = new MyButton("LINE");
-            line.addActionListener(e -> setFigure(Figure.LINE));
+            line.addActionListener(e -> setFigure(Figure.LINE, Cursor.CROSSHAIR_CURSOR));
             myToolBar.add(line);
         MyButton fill = new MyButton("채우기");
+            fill.addActionListener(e -> setFigure(Figure.FILL, Cursor.HAND_CURSOR));
             myToolBar.add(fill);
-        MyButton red = new MyButton("RED");
+        MyButton red = new MyButton(Color.red);
             red.addActionListener(e -> setColor(Color.red));
             myToolBar.add(red);
-        MyButton black = new MyButton("BLACK");
+        MyButton black = new MyButton(Color.black);
             black.addActionListener(e-> setColor(Color.black));
             myToolBar.add(black);
-        MyButton yellow = new MyButton("YELlOW");
+        MyButton yellow = new MyButton(Color.yellow);
             yellow.addActionListener(e -> setColor(Color.yellow));
             myToolBar.add(yellow);
     }
@@ -106,13 +117,13 @@ public class PaintPanel extends JPanel {
 
         MyMenu figure = new MyMenu("도형");
             MyMenuItem rect = new MyMenuItem("사각형");
-                rect.addActionListener(e -> setFigure(Figure.RECT));
+                rect.addActionListener(e -> setFigure(Figure.RECT, Cursor.CROSSHAIR_CURSOR));
                 figure.add(rect);
             MyMenuItem oval = new MyMenuItem("타원");
-                oval.addActionListener(e -> setFigure(Figure.OVAL));
+                oval.addActionListener(e -> setFigure(Figure.OVAL, Cursor.CROSSHAIR_CURSOR));
                 figure.add(oval);
             MyMenuItem line = new MyMenuItem("선분");
-                line.addActionListener(e -> setFigure(Figure.LINE));
+                line.addActionListener(e -> setFigure(Figure.LINE, Cursor.CROSSHAIR_CURSOR));
                 figure.add(line);
 
         MyMenu color = new MyMenu("색상");
@@ -133,6 +144,7 @@ public class PaintPanel extends JPanel {
 
     @Override
     public void paint(Graphics g) {
+        super.paint(g);
         myToolBar.draw(g);
         myMenuBar.draw(g);
         figureBox.draw(g);
