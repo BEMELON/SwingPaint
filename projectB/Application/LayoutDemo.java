@@ -1,9 +1,5 @@
 package SwingPaint.projectB.Application;
 
-import SwingPaint.projectB.SwingAPI.MyFlowLayout;
-import SwingPaint.projectB.SwingAPI.MyGridLayout;
-import SwingPaint.projectB.SwingAPI.MyLayout;
-
 import javax.swing.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;

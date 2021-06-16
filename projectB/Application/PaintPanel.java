@@ -15,48 +15,8 @@ public class PaintPanel extends JPanel {
     private int type = Figure.RECT;
     private Color color = Color.black;
 
-    class MyMouseListener implements MouseListener {
-        private Point start, end;
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            myMenuBar.clickEvent(e.getPoint());
-            myToolBar.clickEvent(e.getPoint());
-            if (type == Figure.FILL)
-                figureBox.fill(e.getPoint(), color);
-            repaint();
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            start = e.getPoint();
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            end = e.getPoint();
-            if(!start.equals(end)) {
-                dragEvent(start, end);
-            }
-
-            myMenuBar.clickEvent(e.getPoint());
-            repaint();
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
-        }
-    }
-
     public PaintPanel() {
         figureBox = new FigureBox();
-
         initMenuBar();
         initToolBar();
 
@@ -147,5 +107,44 @@ public class PaintPanel extends JPanel {
         myToolBar.draw(g);
         myMenuBar.draw(g);
         figureBox.draw(g);
+    }
+
+    class MyMouseListener implements MouseListener {
+        private Point start, end;
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            myMenuBar.clickEvent(e.getPoint());
+            myToolBar.clickEvent(e.getPoint());
+            if (type == Figure.FILL)
+                figureBox.fill(e.getPoint());
+            repaint();
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            start = e.getPoint();
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            end = e.getPoint();
+            if(!start.equals(end)) {
+                dragEvent(start, end);
+            }
+
+            myMenuBar.clickEvent(e.getPoint());
+            repaint();
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
     }
 }
