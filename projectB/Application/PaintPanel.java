@@ -139,7 +139,6 @@ public class PaintPanel extends JPanel {
 
         myMenuBar.add(figure);
         myMenuBar.add(color);
-
     }
 
     @Override

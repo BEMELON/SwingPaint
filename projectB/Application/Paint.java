@@ -1,5 +1,7 @@
 package SwingPaint.projectB.Application;
 
+import SwingPaint.projectB.SwingAPI.MyFlowLayout;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,9 +13,6 @@ public class Paint extends JFrame {
         setLocation(80, 0);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setContentPane(paintPanel);
-
-//        setLayout(new MyFlowLayout());
-//        setLayout(new MyGridLayout());
 
         setVisible(true);
     }
