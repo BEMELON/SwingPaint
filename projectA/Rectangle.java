@@ -1,4 +1,4 @@
-package SwingPaint;
+package SwingPaint.projectA;
 
 import SwingPaint.projectA.Figure;
 
