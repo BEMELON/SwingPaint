@@ -36,6 +36,7 @@ public class MyMenu {
         g.drawRect(x, y, width, height);
         g.drawString(name, x + tx, y + ty);
         if (isClicked) {
+            // 서브메뉴 draw
             for(MyMenu menu: menus) {
                 menu.draw(g);
             }
@@ -54,7 +55,6 @@ public class MyMenu {
         }
         boolean contains = x <= p.x && p.x <= x + width && y <= p.y && p.y <= y + height;
         if(!contains) isClicked = false;
-
         return contains;
     }
 

@@ -18,6 +18,12 @@ public class Rectangle extends Figure {
 
     @Override
     public void draw(Graphics g) {
+        if(flagFill) {
+            g.setColor(figureColor);
+            g.fillRect(x, y, width, height);
+        }
+        g.setColor(color);
         g.drawRect(x, y, width, height);
+        g.setColor(Color.BLACK);
     }
 }

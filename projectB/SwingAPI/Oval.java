@@ -14,7 +14,13 @@ public class Oval extends Figure {
 
     @Override
     public void draw(Graphics g) {
+        if(flagFill) {
+            g.setColor(figureColor);
+            g.fillOval(x, y, width, height);
+        }
+        g.setColor(color);
         g.drawOval(x, y, width, height);
+        g.setColor(Color.black);
     }
 
 }

@@ -18,6 +18,8 @@ public class Line extends Figure {
 
     @Override
     public void draw(Graphics g) {
+        g.setColor(color);
         g.drawLine(x, y, width, height);
+        g.setColor(Color.BLACK);
     }
 }
