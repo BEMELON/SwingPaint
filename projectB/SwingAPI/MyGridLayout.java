@@ -31,10 +31,8 @@ public class MyGridLayout implements MyLayout {
         if (buttons.size() > row * col) {
             col = buttons.size() / row;
         }
-        System.out.println(frameHeight);
         int unitWidth = frameWidth / col;
         int unitHeight = frameHeight / row;
-        System.out.println(unitHeight);
         int x = 0, y = 0;
         for(int r = 0; r < row; r++) {
             for(int c = 0; c < col; c++) {
