@@ -2,9 +2,9 @@ package SwingPaint.projectB.SwingAPI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public interface MyLayout {
-    void addLayoutComponent(Component comp);
-
-    void setInfo(JFrame main);
+    void addLayoutComponent(ArrayList<JButton> comp);
+    void update(int width, int height);
 }
