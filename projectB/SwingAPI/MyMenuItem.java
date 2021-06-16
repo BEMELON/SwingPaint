@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class MyMenuItem extends MyMenu {
+    // 클릭되었을 때 실행될 ActionListener
     private MyActionListener myActionListener;
 
     public MyMenuItem(String name) {

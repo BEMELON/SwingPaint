@@ -5,13 +5,21 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import java.awt.*;
 
 public abstract class Figure {
+    /**
+     * CONSTANT를 제공하여, main에서 활용할 수 있도록 함.
+     */
     public static final int RECT = 0;
     public static final int OVAL = 1;
     public static final int LINE = 2;
     public static final int FILL = 3;
 
+    // (x, y) , 넓이, 높이
     protected int x, y, width, height;
+
+    // 도형 내부를 색으로 채워야 하는지
     protected Boolean flagFill = false;
+
+    // 선 색과 내부 색
     protected Color color, figureColor;
 
     public Figure(Point start, Point end) {
@@ -46,6 +54,4 @@ public abstract class Figure {
     }
 
     public abstract void draw(Graphics g);
-
-
 }

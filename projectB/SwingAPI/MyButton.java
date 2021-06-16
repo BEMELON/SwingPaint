@@ -4,9 +4,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class MyButton {
+    // Button에 쓰여질 이름
     private String name;
+
+    // Button이 클릭되었을 때 호출되는 listener
     private MyActionListener myActionListener;
+
+    // Button (x,y), 넓이, 높이
     private int x, y, width, height;
+
+    // ㄹ
     private Color color;
 
     public MyButton(String name) {
@@ -16,6 +23,7 @@ public class MyButton {
     public MyButton(Color color) {
         this.color = color;
     }
+
     public MyButton(Point start, Point end) {
         this.x = Math.min(start.x, end.x);
         this.y = Math.min(start.y, end.y);
@@ -37,12 +45,13 @@ public class MyButton {
         this.myActionListener = listener;
     }
 
-    public String getName() {
-        return name;
+    public boolean contains(Point p) {
+        return x <= p.x && p.x <= x + width
+                && y <= p.y && p.y <= y + height;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void click() {
+        myActionListener.actionPerformed(new ActionEvent(new Point(), 1, null));
     }
 
     public void draw(Graphics g) {
@@ -56,8 +65,6 @@ public class MyButton {
         g.drawRect(x, y, width, height);
     }
 
-
-
     public void setHeight(int height) {
         this.height = height;
     }
@@ -66,13 +73,12 @@ public class MyButton {
         this.width = width;
     }
 
-    public boolean contains(Point p) {
-        return x <= p.x && p.x <= x + width
-            && y <= p.y && p.y <= y + height;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void click() {
-        myActionListener.actionPerformed(new ActionEvent(new Point(), 1, null));
+    public String getName() {
+        return name;
     }
 
     public void setX(int x) {
