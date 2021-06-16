@@ -1,7 +1,5 @@
 package SwingPaint.projectA;
 
-import javafx.scene.layout.Border;
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
