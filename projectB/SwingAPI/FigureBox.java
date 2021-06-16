@@ -30,7 +30,7 @@ public class FigureBox {
         for(Figure f: figures) {
             if(f.contains(p)) {
                 f.setFigureColor(color);
-                f.fill();
+                f.fill(); return;
             }
         }
     }

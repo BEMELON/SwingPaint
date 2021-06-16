@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class MyToolBar {
     private ArrayList<MyButton> buttons;
-    private int x = 0;
+    private int x = 850;
     private int y = 60;
     private final int buttonWidth = 40;
     private int height;
@@ -40,4 +40,5 @@ public class MyToolBar {
             }
         }
     }
+
 }

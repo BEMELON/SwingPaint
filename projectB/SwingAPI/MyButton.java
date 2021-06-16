@@ -56,13 +56,7 @@ public class MyButton {
         g.drawRect(x, y, width, height);
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
 
-    public void setY(int y) {
-        this.y = y;
-    }
 
     public void setHeight(int height) {
         this.height = height;
@@ -79,5 +73,13 @@ public class MyButton {
 
     public void click() {
         myActionListener.actionPerformed(new ActionEvent(new Point(), 1, null));
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 }

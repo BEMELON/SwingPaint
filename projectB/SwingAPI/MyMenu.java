@@ -32,6 +32,10 @@ public class MyMenu {
         menu.setHeight(height);
     }
 
+    private void setY(int y) {
+        this.y = y;
+    }
+
     public void draw(Graphics g) {
         g.drawRect(x, y, width, height);
         g.drawString(name, x + tx, y + ty);
@@ -70,10 +74,6 @@ public class MyMenu {
         return ty;
     }
 
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public void setWidth(int width) {
         this.width = width;
     }
@@ -92,4 +92,5 @@ public class MyMenu {
     public int getWidth() {
         return width;
     }
+
 }

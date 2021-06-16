@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class MyMenuBar {
     private ArrayList<MyMenu> menus = new ArrayList<>();
-    private int height = 20, width;
+    private int x = 0, y= 0, height = 20, width;
 
     public MyMenuBar() {
     }
@@ -22,7 +22,7 @@ public class MyMenuBar {
     }
 
     public void draw(Graphics g) {
-        g.drawRect(0,0, width, height);
+        g.drawRect(x,y, width, height);
         for(MyMenu menu: menus) {
             menu.draw(g);
         }
