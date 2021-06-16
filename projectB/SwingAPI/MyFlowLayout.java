@@ -7,8 +7,6 @@ import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MyFlowLayout implements MyLayout {
-    static boolean mutex = false;
-
     private Vector<Component> components = new Vector<>();
     private int frameWidth, frameHeight, lastButtonWidth;
     private int componentX, componentY = 30;
